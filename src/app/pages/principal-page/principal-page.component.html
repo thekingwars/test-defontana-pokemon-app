@@ -1,0 +1,38 @@
+<ng-container
+  *ngIf="{
+    pokemons: pokemons$ | async,
+    allPokemons: allPokemons$ | async,
+    detailPokemon: detailPokemon$ | async
+  } as state"
+>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <app-pokemons
+          [pokemons]="state.pokemons"
+          [isLoadingResults]="isLoadingResults"
+          [allPokemons]="state.allPokemons"
+          [count]="count"
+          (url)="nextOrPreviousPagePokemon($event)"
+          (pokemonName)="pokemonName($event)"
+        ></app-pokemons>
+      </div>
+
+      <div class="col-md-6">
+        <app-detail-pokemon
+          class="d-flex justify-content-center align-items-center"
+          [detailPokemon]="state.detailPokemon"
+          [isLoadingData]="isLoadingPokemonData"
+        ></app-detail-pokemon>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-md-12">
+        <app-summary-pokemon
+          [allPokemons]="state.allPokemons"
+        ></app-summary-pokemon>
+      </div>
+    </div>
+  </div>
+</ng-container>

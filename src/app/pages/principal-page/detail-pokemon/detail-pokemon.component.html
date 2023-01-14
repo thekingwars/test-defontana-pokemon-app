@@ -1,0 +1,52 @@
+<main>
+  <img
+    [src]="
+      this.detailPokemon?.sprites?.front_default ??
+      'assets/images/Ripple-1s-200px.gif'
+    "
+    alt="pokemon"
+    class="pokemon__image"
+  />
+
+  <h1 class="pokemon__data">
+    <span class="pokemon__number">{{
+      this.detailPokemon?.name ?? "Cargando..."
+    }}</span>
+    -
+    <span class="pokemon__name">{{ this.detailPokemon?.id ?? "0" }}</span>
+  </h1>
+
+  <ng-container *ngIf="this.detailPokemon">
+    <div class="pokemon__types">
+      <h2>Types:</h2>
+
+      <span *ngFor="let item of this.detailPokemon?.types" class="ml-2">
+        {{ item.type.name }},
+      </span>
+    </div>
+
+    <div class="pokemon__weight">
+      <h2>Weight:</h2>
+      <span class="ml-2 h5">
+        {{ this.detailPokemon?.weight }}
+      </span>
+    </div>
+
+    <div class="pokemon__base__experience">
+      <h2>Base Experience:</h2>
+      <span class="ml-2 h5">
+        {{ this.detailPokemon?.base_experience }}
+      </span>
+    </div>
+
+    <div class="pokemon__abilities">
+      <h2>Abilities:</h2>
+
+      <span *ngFor="let item of this.detailPokemon?.abilities" class="ml-2">
+        {{ item.ability.name }},
+      </span>
+    </div>
+  </ng-container>
+
+  <img src="assets/images/pokedex.png" alt="pokedex" class="pokedex" />
+</main>

@@ -1,0 +1,68 @@
+<ng-container
+  *ngIf="{
+    dataPokemon: dataPokemon$ | async,
+    dataSource: dataSource$ | async,
+    allPokemons: allPokemons$ | async,
+    filteredOptions: filteredOptions$ | async
+  } as state"
+>
+  <mat-form-field class="w-100" appearance="fill">
+    <mat-label>Buscador</mat-label>
+    <input
+      type="text"
+      placeholder="Escribe el nombre de un Pokemon"
+      matInput
+      [formControl]="pokemonSearchControl"
+      [matAutocomplete]="auto"
+    />
+    <mat-autocomplete
+      autoActiveFirstOption
+      #auto="matAutocomplete"
+      (optionSelected)="selectedPokemon($event.option.value)"
+      (closed)="closedAutoComplete()"
+    >
+      <mat-option *ngFor="let option of state.filteredOptions" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <div class="example-container mat-elevation-z8">
+    <div class="example-loading-shade" *ngIf="isLoadingResults">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <div class="example-table-container">
+      <table
+        mat-table
+        [dataSource]="state.dataSource"
+        class="example-table"
+        matSort
+        matSortActive="created"
+        matSortDisableClear
+        matSortDirection="desc"
+      >
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Nombre del Pokemon</th>
+          <td mat-cell *matCellDef="let row" class="pointer">{{ row.name }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr
+          mat-row
+          (click)="getPokemonName(row.name)"
+          [class.demo-row-is-clicked]="clickedRow === row.name"
+          *matRowDef="let row; columns: displayedColumns"
+        ></tr>
+      </table>
+    </div>
+
+    <mat-paginator
+      [showFirstLastButtons]="true"
+      [disabled]="isLoadingResults || disabledPaginator"
+      [length]="count"
+      [pageSize]="state.dataSource?.data?.length"
+      (page)="pagination(state.dataPokemon)"
+    ></mat-paginator>
+  </div>
+</ng-container>
